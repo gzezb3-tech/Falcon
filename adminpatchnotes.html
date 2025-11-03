@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <style>
+    body { background-color: #0d1b2a; color: white; font-family: 'Poppins', sans-serif; padding: 40px; }
+    input, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 10px; border: none; font-size: 1rem; }
+    textarea { height: 150px; resize: none; }
+    button { padding: 10px 20px; background: #007bff; border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Add Patch Note</h1>
+  <input type="text" id="patch-title" placeholder="Patch title..." />
+  <textarea id="patch-description" placeholder="Patch description..."></textarea><br />
+  <button id="save-patch">Save Patch Note</button>
+
+  <script>
+    const saveBtn = document.getElementById("save-patch");
+    const titleInput = document.getElementById("patch-title");
+    const descInput = document.getElementById("patch-description");
+
+    saveBtn.addEventListener("click", () => {
+      const title = titleInput.value.trim();
+      const description = descInput.value.trim();
+
+      if (title && description) {
+        fetch("/api/patches", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, description })
+        })
+        .then(res => {
+          if (!res.ok) throw new Error("Server error");
+          return res.json();
+        })
+        .then(data => {
+          if (data.success) {
+            titleInput.value = "";
+            descInput.value = "";
+            alert("✅ Patch Note saved!");
+          } else {
+            alert("❌ Error: " + data.message);
+          }
+        })
+        .catch(err => alert("⚠️ Error: " + err.message));
+      } else {
+        alert("📝 Fill both fields.");
+      }
+    });
+  </script>
+</body>
+</html>
