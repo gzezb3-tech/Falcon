@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel</title>
+  <style>
+    body { background-color: #0d1b2a; color: white; font-family: 'Poppins', sans-serif; padding: 40px; }
+    h1, h2 { color: #00d4ff; }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+    textarea { height: 120px; resize: none; }
+    button {
+      padding: 10px 20px;
+      margin-bottom: 30px;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Add Patch Note</h1>
+  <input type="text" id="patch-title" placeholder="Patch title..." />
+  <textarea id="patch-description" placeholder="Patch description..."></textarea><br />
+  <button id="save-patch">Save Patch Note</button>
+
+  <h2>Add Announcement</h2>
+  <input type="text" id="announce-title" placeholder="Announcement title..." />
+  <textarea id="announce-description" placeholder="Announcement description..."></textarea><br />
+  <button id="save-announce">Save Announcement</button>
+
+  <script>
+    
+    
+  // نجيبو الإيميل و الرتب من localStorage
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const email = localStorage.getItem("email");
+
+  // نحددو شكون عندو الحق يدخل
+  const requiredRoles = ["developer", "admin"]; // نزيد admin احتياطاً
+
+  // إذا ما عندوش رتبة تخليه يدخل، نرّده
+  const hasAccess = roles.some(role => requiredRoles.includes(role));
+
+  if (!hasAccess) {
+    alert("Access denied: You are not authorized to access this page.");
+    window.location.href = "login.html";
+  }
+  
+    
+    
+    // PATCH
+    document.getElementById("save-patch").addEventListener("click", () => {
+      const title = document.getElementById("patch-title").value.trim();
+      const description = document.getElementById("patch-description").value.trim();
+
+      if (title && description) {
+        fetch("/api/patches", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, description })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("✅ Patch Note Saved!");
+            document.getElementById("patch-title").value = "";
+            document.getElementById("patch-description").value = "";
+          }
+        });
+      } else {
+        alert("❌ Fill all patch note fields.");
+      }
+    });
+
+    // ANNOUNCEMENT
+    document.getElementById("save-announce").addEventListener("click", () => {
+      const title = document.getElementById("announce-title").value.trim();
+      const description = document.getElementById("announce-description").value.trim();
+
+      if (title && description) {
+        fetch("/api/announcements", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, description })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("✅ Announcement Saved!");
+            document.getElementById("announce-title").value = "";
+            document.getElementById("announce-description").value = "";
+          }
+        });
+      } else {
+        alert("❌ Fill all announcement fields.");
+      }
+    });
+  </script>
+</body>
+</html>

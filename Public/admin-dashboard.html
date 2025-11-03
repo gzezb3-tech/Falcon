@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - Tunisian UnderGround</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      padding: 40px;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      z-index: 1;
+    }
+
+    /* === Video Background === */
+    #bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: -1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00d4ff;
+      margin-bottom: 40px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+    }
+
+    .stat-box {
+      background-color: #102840cc;
+      padding: 20px 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
+      transform: perspective(600px) rotateX(0deg);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-box:hover {
+      transform: perspective(600px) rotateX(5deg);
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
+    }
+
+    .stat-box h2 {
+      color: #00f7ff;
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    .stat-box p {
+      color: #ccc;
+      font-size: 1rem;
+      margin: 5px 0 0;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background-color: #102840cc;
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 150%;
+      height: 150%;
+      background: linear-gradient(135deg, #00f0ff66, #00000000);
+      top: -100%;
+      left: -100%;
+      animation: float-glow 6s infinite linear;
+      z-index: 0;
+    }
+
+    @keyframes float-glow {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(50%, 50%); }
+      100% { transform: translate(100%, 100%); }
+    }
+
+    .card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+      color: #00f7ff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card p {
+      color: #ccc;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card a {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🎥 Video Background -->
+  <video id="bg-video" autoplay muted loop>
+    <source src="https://media.discordapp.net/attachments/1388288696700244151/1388900253322838056/VN20250626_135315.mp4?ex=6864a3e8&is=68635268&hm=ab15f92940ae6edeb925c104b2ab6dd45b9af5f565dc1de64c7ad6e3729c9914&" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+
+  <h1>Admin Dashboard - Tunisian UnderGround RP</h1>
+
+  <div class="stats">
+    <div class="stat-box">
+      <h2 id="total-users">0</h2>
+      <p>Total Users</p>
+    </div>
+    <div class="stat-box">
+      <h2 id="total-admins">0</h2>
+      <p>Total Admins</p>
+    </div>
+  </div>
+
+  <div class="dashboard">
+    <div class="card">
+      <h2>Manage Users</h2>
+      <p>View, promote, or ban server users.</p>
+      <a href="/admin-users.html">Go to Users</a>
+    </div>
+    <div class="card">
+      <h2>Patch Notes</h2>
+      <p>Add or update game/server patch logs.</p>
+      <a href="/admin-patch-notes.html">Manage Patches</a>
+    </div>
+    <div class="card">
+      <h2>Announcements</h2>
+      <p>Create announcements for all players.</p>
+      <a href="/admin-announcements.html">Manage Announcements</a>
+    </div>
+    <div class="card">
+      <h2>Whitelist Applications</h2>
+      <p>Review and manage whitelist forms.</p>
+      <a href="/admin-whitelist.html">View Whitelist</a>
+    </div>
+    <div class="card">
+      <h2>Gang Applications</h2>
+      <p>Check and manage submitted gang forms.</p>
+      <a href="/admin-gang-view.html">View Gangs</a>
+    </div>
+    <div class="card">
+      <h2>Faction Applications</h2>
+      <p>Review all incoming faction applications.</p>
+      <a href="/admin-faction-view.html">View Factions</a>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script>
+    async function fetchUsers() {
+      const res = await fetch('/api/users');
+      const users = await res.json();
+      return users;
+    }
+
+    async function updateStats() {
+      const users = await fetchUsers();
+      const totalUsers = users.length;
+      const totalAdmins = users.filter(u => u.roles && u.roles.includes("admin")).length;
+
+      document.getElementById('total-users').textContent = totalUsers;
+      document.getElementById('total-admins').textContent = totalAdmins;
+    }
+
+    updateStats();
+  </script>
+</body>
+</html>
