@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Ranks</title>
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      background: linear-gradient(to right, #0d1b2a, #1e3a8a);
+      color: white;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ffff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .user-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .user-card label {
+      display: block;
+      margin-top: 10px;
+    }
+    .user-card input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .save-btn {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #00e6e6;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Rank Manager</h1>
+  <div id="user-list"></div>
+
+  <script>
+    const RANKS = ["admin", "operator", "developer", "founder", "gang mode", "faction mode", "whitelist manager"];
+
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        const container = document.getElementById('user-list');
+        users.forEach(user => {
+          const username = user.username || "Unknown";
+
+          const div = document.createElement('div');
+          div.className = "user-card";
+
+          div.innerHTML = `
+            <h3>${username}</h3>
+            ${RANKS.map(rank => `
+              <label>
+                <input type="checkbox" name="${rank}" ${user.roles?.includes(rank) ? 'checked' : ''}>
+                ${rank}
+              </label>
+            `).join('')}
+            <button class="save-btn">Save</button>
+          `;
+
+          div.querySelector('.save-btn').addEventListener('click', () => {
+            const selectedRanks = [...div.querySelectorAll('input[type=checkbox]:checked')].map(cb => cb.name);
+
+            fetch('/api/update-ranks', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username, ranks: selectedRanks })
+            })
+            .then(res => res.json())
+            .then(result => {
+              alert(result.msg || "Updated!");
+            });
+          });
+
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById('user-list').textContent = "❌ Error loading users!";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

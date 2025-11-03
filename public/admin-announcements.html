@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Announcements</title>
+  <style>
+    body {
+      background-color: #0d1b2a;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #00d4ff;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Add New Announcement</h1>
+
+  <input type="text" id="announce-title" placeholder="Announcement title..." />
+  <textarea id="announce-description" placeholder="Announcement description..."></textarea><br />
+  <button id="save-announce">Save Announcement</button>
+
+  <script>
+    
+    
+  // نجيبو الإيميل و الرتب من localStorage
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const email = localStorage.getItem("email");
+
+  // نحددو شكون عندو الحق يدخل
+  const requiredRoles = ["founder", "admin"]; // نزيد admin احتياطاً
+
+  // إذا ما عندوش رتبة تخليه يدخل، نرّده
+  const hasAccess = roles.some(role => requiredRoles.includes(role));
+
+  if (!hasAccess) {
+    alert("Access denied: You are not authorized to access this page.");
+    window.location.href = "login.html";
+  }
+  
+    
+    
+    const saveAnnounceBtn = document.getElementById("save-announce");
+    const announceTitle = document.getElementById("announce-title");
+    const announceDesc = document.getElementById("announce-description");
+
+    saveAnnounceBtn.addEventListener("click", () => {
+      const title = announceTitle.value.trim();
+      const description = announceDesc.value.trim();
+
+      if (title && description) {
+        fetch("/api/announcements", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, description })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            alert("✅ Announcement saved!");
+            announceTitle.value = "";
+            announceDesc.value = "";
+          } else {
+            alert("❌ Error saving announcement.");
+          }
+        })
+        .catch((err) => alert("❌ Error: " + err.message));
+      } else {
+        alert("❗ Please fill all fields.");
+      }
+    });
+  </script>
+</body>
+</html>

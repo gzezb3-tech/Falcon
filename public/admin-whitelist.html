@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Whitelist Panel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: transparent;
+      color: white;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px cyan;
+    }
+
+    .entry {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 15px auto;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      backdrop-filter: blur(5px);
+      transition: transform 0.3s;
+      max-width: 700px;
+    }
+
+    .entry:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(0,255,255,0.4);
+    }
+
+    video.bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <video class="bg" autoplay muted loop>
+    <source src="https://media.discordapp.net/attachments/1388288696700244151/1388900253322838056/VN20250626_135315.mp4" type="video/mp4" />
+  </video>
+
+  <h1>Admin Whitelist Submissions</h1>
+  <div id="whitelist-container">
+    <p id="no-data">Loading whitelist data...</p>
+  </div>
+
+  <script>
+    const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+    if (!roles.includes("whitelist manager")) {
+      alert("Access denied. You are not authorized.");
+      window.location.href = "index.html";
+    }
+
+    fetch('/api/whitelist')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('whitelist-container');
+        const noDataMsg = document.getElementById('no-data');
+
+        if (!Array.isArray(data) || data.length === 0) {
+          noDataMsg.textContent = "No whitelist submissions found.";
+          return;
+        }
+
+        noDataMsg.remove();
+
+        data.reverse().forEach((entry, index) => {
+          const box = document.createElement('div');
+          box.className = 'entry';
+          box.innerHTML = `
+            <p><strong>#${index + 1}</strong> — <em>${entry.date || "Unknown Date"}</em></p>
+            <p><strong>Discord:</strong> ${entry.discord || '-'}</p>
+            <p><strong>Age:</strong> ${entry.age || '-'}</p>
+            <p><strong>Mic:</strong> ${entry.mic || '-'}</p>
+            <p><strong>Agree with Rules:</strong> ${entry.agree_rules || '-'}</p>
+            <p><strong>Read Rules:</strong> ${entry.read_rules || '-'}</p>
+            <p><strong>What if someone breaks rules:</strong> ${entry.report_behavior || '-'}</p>
+            <p><strong>What if player insults you:</strong> ${entry.insult_response || '-'}</p>
+            <p><strong>Motivation to join:</strong> ${entry.motivation || '-'}</p>
+            <p><strong>What if you saw a bug:</strong> ${entry.bug_response || '-'}</p>
+          `;
+          container.appendChild(box);
+        });
+      })
+      .catch(() => {
+        document.getElementById('no-data').textContent = 'Error loading data.';
+      });
+  </script>
+</body>
+</html>

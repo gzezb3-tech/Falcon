@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tunisian UnderGround - Sign Up</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    /* 🎥 فيديو خلفي */
+    #bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* 🌑 تغبيش وخلفية سوداء خفيفة فوق الفيديو */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: -1;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      padding: 30px;
+      border-radius: 20px;
+      width: 100%; max-width: 450px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      animation: slideIn 1s ease;
+      z-index: 1;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #1e90ff;
+      text-shadow: 0 0 10px #1e90ff;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      display: block;
+      font-size: 14px;
+      color: #eee;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease;
+    }
+
+    input:focus {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1e90ff;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0f5db3;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .switch a {
+      color: #1e90ff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- 🎥 الفيديو في الخلف -->
+  <video id="bg-video" autoplay muted loop>
+    <source src="https://media.discordapp.net/attachments/1388288696700244151/1388900253322838056/VN20250626_135315.mp4?ex=6864a3e8&is=68635268&hm=ab15f92940ae6edeb925c104b2ab6dd45b9af5f565dc1de64c7ad6e3729c9914&" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="container">
+    <h2>Create Account</h2>
+    <form id="signup-form">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autocomplete="username" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required autocomplete="new-password" />
+
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="switch">
+      Already have an account? <a href="/login.html">Login</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!username || !password) {
+        alert("❗ Please fill all fields.");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert("✅ Account created successfully!");
+          window.location.href = "/index.html";
+        } else {
+          alert("❌ " + (data.msg || "Failed to create account."));
+        }
+      } catch (error) {
+        alert("❌ Server error: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
