@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omerta RolePlay - Information</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+            background: #000;
+        }
+
+        /* Enhanced animated diagonal lines background */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .line {
+            position: absolute;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 0, 0, 0.8), 
+                rgba(255, 204, 0, 0.8), 
+                rgba(255, 0, 0, 0.8), 
+                transparent);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+            animation: moveLine 12s linear infinite;
+            border-radius: 5px;
+        }
+
+        @keyframes moveLine {
+            0% {
+                transform: translate(-100%, -100%) rotate(45deg);
+            }
+            100% {
+                transform: translate(100vw, 100vh) rotate(45deg);
+            }
+        }
+
+        /* Texture layer */
+        .texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(10, 0, 0, 0), rgba(20, 0, 0, 0.9)), 
+                        url('omerta.png') center/cover fixed;
+            z-index: -1;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px 40px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Logo section */
+        .logo-section {
+            margin-bottom: 90px;
+        }
+
+        .small-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            transition: all 0.4s ease;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .small-logo:hover {
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.9);
+            transform: scale(1.1) rotate(5deg);
+            border-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .small-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .server-name {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.8);
+            letter-spacing: 1.5px;
+            background: linear-gradient(to right, #ffcc00, #ff3300);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .server-description {
+            font-size: 22px;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 204, 0, 0.3);
+        }
+
+        /* Buttons layout */
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 50px auto;
+            max-width: 1000px;
+        }
+
+        .buttons-column {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 48%;
+        }
+
+        .nav-btn {
+            background: rgba(20, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 22px 15px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 140px;
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 204, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 204, 0, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .nav-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .nav-btn:hover {
+            background: rgba(40, 0, 0, 0.85);
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(255, 51, 0, 0.6);
+            border-color: rgba(255, 204, 0, 0.7);
+        }
+
+        .nav-btn i {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 40px 0 30px;
+            text-align: center;
+            margin-top: auto;
+            border-top: 2px solid rgba(255, 204, 0, 0.4);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #ffcc00, #ff3300, #ffcc00, transparent);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo-container {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+            border: 3px solid rgba(255, 204, 0, 0.7);
+            transition: all 0.4s ease;
+        }
+
+        .footer-logo:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.9);
+        }
+
+        .footer-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .footer-server {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #ffcc00;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+
+        .footer-text {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 25px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            padding: 15px;
+            background: rgba(30, 0, 0, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 204, 0, 0.2);
+        }
+
+        .developer-credit {
+            font-size: 17px;
+            color: #ff7b99;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(40, 0, 0, 0.5);
+            padding: 12px 25px;
+            border-radius: 30px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 204, 0, 0.3);
+        }
+
+        .dev-icon {
+            color: #ffcc00;
+            font-size: 20px;
+        }
+
+        .copyright {
+            color: #aaa;
+            margin-top: 25px;
+            font-size: 15px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        /* Responsive design */
+        @media (max-width: 900px) {
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .buttons-column {
+                width: 100%;
+                max-width: 500px;
+            }
+            
+            .server-name {
+                font-size: 36px;
+            }
+            
+            .server-description {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 15px 30px;
+            }
+            
+            .server-name {
+                font-size: 30px;
+            }
+            
+            .server-description {
+                font-size: 18px;
+            }
+            
+            .nav-btn {
+                min-height: 120px;
+                padding: 18px 10px;
+                font-size: 16px;
+            }
+            
+            .nav-btn i {
+                font-size: 30px;
+            }
+            
+            .footer-server {
+                font-size: 26px;
+            }
+            
+            .footer-text {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .server-name {
+                font-size: 26px;
+            }
+            
+            .nav-btn {
+                min-height: 110px;
+                padding: 15px 8px;
+                font-size: 15px;
+            }
+            
+            .nav-btn i {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced animated background -->
+    <div class="background" id="lines-container"></div>
+    <div class="texture"></div>
+    
+    <!-- Main content -->
+    <div class="container">
+        <div class="logo-section">
+            <div class="small-logo">
+                <img src="https://combined-tan-l2uxaccwxt.edgeone.app/4e611aa491e5b5f37fb67fa17f097252.png" alt="Omerta Logo">
+            </div>
+            <h1 class="server-name">Omerta RolePlay</h1>
+            <p class="server-description">Omerta RolePlay Is A Server Samp To Play With Your Friends.</p>
+        </div>
+        
+        <div class="buttons-container">
+            <div class="buttons-column">
+                <button class="nav-btn" onclick="navigate('donation')">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    Donation
+                </button>
+                <button class="nav-btn" onclick="navigate('faction')">
+                    <i class="fas fa-shield-alt"></i>
+                    Faction System
+                </button>
+                <button class="nav-btn" onclick="navigate('gang')">
+                    <i class="fas fa-skull-crossbones"></i>
+                    Gang System
+                </button>
+            </div>
+            <div class="buttons-column">
+                <button class="nav-btn" onclick="navigate('rules')">
+                    <i class="fas fa-book"></i>
+                    General Rules
+                </button>
+                <button class="nav-btn" onclick="navigate('staff')">
+                    <i class="fas fa-users"></i>
+                    Staff Roster
+                </button>
+                <button class="nav-btn" onclick="navigate('social')">
+                    <i class="fas fa-hashtag"></i>
+                    Social Media
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo-container">
+                <div class="footer-logo">
+                    <img src="https://combined-tan-l2uxaccwxt.edgeone.app/4e611aa491e5b5f37fb67fa17f097252.png" alt="Omerta Logo">
+                </div>
+            </div>
+            <div class="footer-server">Omerta RolePlay</div>
+            <p class="footer-text">Join our community and experience the ultimate SAMP roleplay adventure with realistic systems and dedicated staff!</p>
+            <div class="developer-credit">
+                <i class="fas fa-code dev-icon"></i>
+                <span>Lead Developer: <strong>Omerta Dev Team</strong></span>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Omerta RolePlay. All rights reserved. | Made by Omerta Dev
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated diagonal lines
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('lines-container');
+            const lineCount = 12;
+            
+            for (let i = 0; i < lineCount; i++) {
+                const line = document.createElement('div');
+                line.classList.add('line');
+                
+                // Random properties
+                const thickness = Math.random() * 15 + 5;
+                const duration = Math.random() * 10 + 8;
+                const delay = Math.random() * 5;
+                const startY = -100 - (i * 30);
+                
+                line.style.height = `${thickness}px`;
+                line.style.width = '200%';
+                line.style.top = `${startY}px`;
+                line.style.animationDuration = `${duration}s`;
+                line.style.animationDelay = `${delay}s`;
+                line.style.opacity = '0.7';
+                
+                container.appendChild(line);
+            }
+        });
+        
+        // Navigation function
+        function navigate(page) {
+            // Replace these with your actual URLs
+            const urls = {
+                donation: 'https://itsme.com',
+                faction: 'https://faction.omertarp.com',
+                gang: 'https://gang.omertarp.com',
+                rules: 'https://rules.omertarp.com',
+                staff: 'https://staff.omertarp.com',
+                social: 'https://social.omertarp.com',
+                discord: 'https://discord.gg/omertarp'
+            };
+            
+            if (urls[page]) {
+                window.open(urls[page], '_blank');
+            } else {
+                alert(`Navigation to ${page} is not configured yet.`);
+            }
+        }
+    </script>
+</body>
+</html>
